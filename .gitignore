@@ -23,7 +23,7 @@ jspm_packages/
 .env.production
 .env.local
 
-# parcel-bundler cache (https://parceljs.org/)
+# Parcel cache (https://parceljs.org/)
 .cache
 
 # Next.js build output
@@ -37,10 +37,10 @@ dist
 .cache/
 public/
 
-# vuepress build output
+# Vuepress build output
 .vuepress/dist
 
-# vuepress v2.x temp and cache directory
+# Vuepress v2.x temp and cache directory
 .temp
 
 # Serverless directories
@@ -58,8 +58,6 @@ public/
 # Logs
 logs
 *.log
-yarn-debug.log*
-yarn-error.log*
 lerna-debug.log*
 
 # Runtime data
@@ -84,21 +82,15 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
-# lock files
-package-lock.json
+# Lock files
 yarn.lock
 pnpm-lock.yaml
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
-jspm_packages/
-
 # Optional npm cache directory
 .npm
-.package-lock.json
-.pnp.js
 
 # Optional eslint cache
 .eslintcache
