@@ -1,0 +1,32 @@
+{
+  "name": "proyecto_node",
+  "version": "1.0.0",
+  "description": "Proyecto del taller de Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brandz4/Proyecto_Node.git"
+  },
+  "keywords": [
+    "express",
+    "jwt",
+    "node.js"
+  ],
+  "author": "Brandon Osorio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brandz4/Proyecto_Node/issues"
+  },
+  "homepage": "https://github.com/Brandz4/Proyecto_Node#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.4"
+  }
+}
