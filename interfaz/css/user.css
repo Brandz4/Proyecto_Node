@@ -1,0 +1,203 @@
+/* Estilos básicos del cuerpo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* Estilos del encabezado */
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #333;
+    padding: 10px 20px; /* Reduce el padding para más espacio */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos del contenedor del mensaje de bienvenida */
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    max-width: 1200px; /* Aumenta el ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor */
+}
+
+/* Estilo del mensaje de bienvenida */
+#welcomeMessage {
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Estilo del enlace "Registrar usuario" */
+.register-link {
+    color: white; /* Color blanco por defecto */
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 15px; /* Ajusta el padding para un tamaño más adecuado */
+    border-radius: 5px;
+    background-color: transparent; /* Sin fondo */
+    transition: color 0.3s, text-decoration 0.3s;
+    margin-left: 20px; /* Ajusta la posición a la izquierda */
+    white-space: nowrap; /* Evita el corte de texto en varias líneas */
+}
+
+.register-link:hover {
+    color: #007bff; /* Color azul al pasar el cursor */
+    text-decoration: underline;
+}
+
+/* Estilos del contenedor principal */
+main {
+    margin-top: 60px; /* Ajusta según el tamaño del encabezado */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Estilos busqueda */
+.search-container {
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative; /* Necesario para la posición absoluta del autocompletado */
+    width: 100%; /* Asegura que el contenedor de búsqueda ocupa el ancho completo */
+    max-width: 800px; /* Limita el ancho máximo para mantener un diseño ordenado */
+    margin: 10px;
+}
+
+/* Estilo del campo de búsqueda */
+#searchInput {
+    width: calc(100% - 110px); /* Ajusta el ancho del input para dejar espacio para el botón */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    margin-right: 120px; /* Añade espacio a la derecha para el botón */
+}
+
+/* Estilo del botón de búsqueda */
+.btnBusqueda {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    position: absolute; /* Coloca el botón al lado de la barra de búsqueda */
+    right: 10px; /* Ajusta el botón al lado derecho del campo de búsqueda */
+    top: 0;
+    height: 100%; /* Asegura que el botón tiene la misma altura que el campo de búsqueda */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.btnBusqueda:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos del contenedor de autocompletado */
+#autocompleteList {
+    padding: 0;
+    margin: 0;
+    width: calc(100% - 20px); /* Coincide con el ancho del campo de búsqueda menos márgenes */
+    max-width: calc(100% - 110px); /* Limita el ancho máximo para mantener un diseño ordenado */
+    overflow-y: auto;
+    position: absolute; /* Coloca la lista encima del contenido */
+    display: none; /* Oculta la lista por defecto */
+}
+
+/* Estilo de los ítems en la lista de autocompletado */
+#autocompleteList li {
+    padding: 10px;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+}
+
+#autocompleteList li:hover {
+    color: #007bff;
+}
+
+/* Mostrar la lista de autocompletado cuando se necesite */
+#searchInput:focus + #autocompleteList,
+#searchInput:not(:placeholder-shown) + #autocompleteList {
+    display: block; /* Muestra la lista cuando el input está en foco o tiene texto */
+}
+
+/* Estilos para el formulario */
+#empleadoFormContainer {
+    width: 80%; /* Asegura que el formulario coincide con el ancho del input de búsqueda */
+    max-width: 800px; /* Limita el ancho máximo del formulario */
+    margin-top: 20px; /* Añade un margen superior para separar del buscador */
+}
+
+#empleadoFormContainer form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#empleadoFormContainer label {
+    font-size: 14px;
+    color: #555;
+}
+
+#empleadoFormContainer input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#empleadoFormContainer .buttons {
+    display: flex;
+    justify-content: space-around; /* Distribuye los botones con espacio entre ellos */
+    gap: 10px; /* Añade un espacio entre los botones */
+}
+
+#empleadoFormContainer .buttons button {
+    padding: 15px 30px; /* Aumenta el tamaño del botón */
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px; /* Aumenta el tamaño de la letra */
+}
+
+#empleadoFormContainer .buttons .modify-btn {
+    background-color: #4CAF50; /* Verde */
+}
+
+#empleadoFormContainer .buttons .modify-btn:hover {
+    background-color: #39803b; /* Verde */
+}
+
+#empleadoFormContainer .buttons .delete-btn {
+    background-color: #f44336; /* Rojo */
+}
+
+#empleadoFormContainer .buttons .delete-btn:hover {
+    background-color: #d02216; /* Rojo */
+}
+
+#empleadoFormContainer .buttons .cancel-btn {
+    background-color: #808080; /* Gris */
+}
+
+#empleadoFormContainer .buttons .cancel-btn:hover {
+    background-color: #585858; /* Gris */
+}

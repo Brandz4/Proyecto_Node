@@ -4,6 +4,7 @@ const express = require('express');
 const app = express(); 
 
 //Rutas: 
+const user = require('./routes/user');
 
 //Middleware
 const auth = require('./middleware/auth');
@@ -19,12 +20,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Uso de rutas: 
+// Rutas públicas
 app.get("/", index);
+app.use("/user", (req, res, next) => {
+    if (req.path === '/login') {
+        next(); // No requiere autenticación para login 
+    } else {
+        auth(req, res, next); // Requiere autenticación para otras rutas
+    }
+}, user);
 
-//Middleware para rutas incorrecta: 
+// Middleware para rutas incorrectas
 app.use(notFound);
 
-//Para levantar un servidor se utiliza el .listen, con dos parámetros, el puerto y la función a ejecutar cuando el servidor esté funcionando. 
+//Levantar el servidor:
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server running in port 3000');
 });

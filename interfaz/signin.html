@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/login.css">
     <title>Sign in</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/signin.js"></script>
 </head>
 <body>
     <div class="login-container">
         <h2>Registro</h2>
-        <form action="/register" method="POST">
+        <form id="registerForm">
             <div class="input-group">
                 <label for="firstName">Nombre(s)</label>
                 <input type="text" id="firstName" name="firstName" required>
@@ -35,7 +37,8 @@
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit" class="register-button">Registrarse</button>
+            <button type="button" class="register-button">Registrar Usuario</button>
+            <button type="button" class="login-button" onclick="window.location.href='index.html'">Regresar</button>
         </form>
     </div>
 </body>
