@@ -26,7 +26,7 @@ user.post("/login", async (req, res, next) => {
     return res.status(500).json({ code: 500, message: "Incomplete fields"});
 });
 
-//Para registrar empleado
+//Ruta para registrar empleado
 user.post("/signin", async (req, res, next) => {
     const {user_name, user_last_name, user_phone, user_mail, user_password, user_address} = req.body; 
 
@@ -42,7 +42,22 @@ user.post("/signin", async (req, res, next) => {
     return res.status(500).json({ code: 500, message: "Incomplete fields"});
 });
 
-//Modificar los datos del empleado
+//Ruta para obtener datos del empleado logeado: 
+user.get("/getUserInfo/:user_id", async (req, res, next) => {
+    const user_id  = req.params.user_id;
+
+    if (user_id) {
+        const query = `SELECT user_name, user_last_name FROM empleados WHERE user_id = ${user_id}`;
+        const rows = await db.query(query);
+
+        return (rows.length > 0) ? res.status(200).json({ code: 200, message: "User info retrieved successfully", user: rows[0] }) :
+        res.status(404).json({ code: 404, message: "User not found" });
+    } else {
+        res.status(400).json({ code: 400, message: "The user id is necessary" });
+    }
+});
+
+//Ruta para modificar los datos del empleado
 user.put("/update", async (req, res, next) => {
     const { user_id, user_name, user_last_name, user_phone, user_mail, user_address } = req.body;
 
@@ -80,7 +95,7 @@ user.delete('/delete', async (req, res) => {
     }
 });
 
-//Ruta para obtener los empleados:
+//Ruta para obtener los datos de los empleados:
 user.get("/empleados", async (req, res, next) => { 
 
     const query = `SELECT * FROM empleados`;

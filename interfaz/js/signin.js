@@ -1,12 +1,14 @@
 window.onload = init; 
 
+//Función inicial que verifica si ya hay un token por seguridad: 
 function init() {
     if(!localStorage.getItem("token")){
-        window.location.href = "login.html";
+        window.location.href = "index.html";
     }
     document.querySelector('.register-button').addEventListener('click', signin);
 }
 
+//Función para el registro de empleados: 
 function signin() {
     var name = document.getElementById('firstName').value; 
     var lastName = document.getElementById('lastName').value;

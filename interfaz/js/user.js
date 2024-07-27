@@ -2,49 +2,89 @@ window.onload = init;
 var headers = {};
 var url = "http://localhost:3000/user";
 var empleados = [];
+let token = null;
 
-function getUserFromToken() {
-    const token = localStorage.getItem("token");
-    if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el payload del token JWT
-        return {
-            user_name: payload.user_name,
-            user_last_name: payload.user_last_name
-        };
-    }
-    return null;
-}
-
+//Función inicial que obtiene el token y llama a otras funciones para obtención de información: 
 function init() {
-    if(localStorage.getItem("token")){
+    token = localStorage.getItem("token");
+    if(token){
         headers = {
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': "bearer " + localStorage.getItem("token")
             }
         }
         const user = getUserFromToken();
-        displayWelcomeMessage(user);
+        fetchUserInfo(user.user_id);
         loadEmpleados();
     }else{
         window.location.href = "index.html"; 
     }
 }
 
+function getUserFromToken() {
+    if (!token) return null;
+
+    //Para obtener el id del usuario logeado a través del token: 
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload;
+}
+
+//Función para validar y obtener datos del usuario mediante el id de su token. 
+function fetchUserInfo(user_id) {
+    axios.get(`${url}/getUserInfo/${user_id}`, headers)
+        .then(function(response) {
+            const user = response.data.user;
+            displayWelcomeMessage(user);
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+            if (error.response && error.response.status === 404) {
+                //Se elimina el token si su id no coincide con alguno de la base de datos cerrando su sesión. 
+                localStorage.removeItem("token");
+                alert('Credentials expired, you need to log in again.');
+                window.location.href = "index.html";
+            } else {
+                alert('Error eith user information.');
+            }
+        });
+}
+
+//Función para mostrar mensaje de bienvenida con los datos del usuario logueado.
+function displayWelcomeMessage(user) {
+    var container = document.querySelector(".welcome-container");
+    container.innerHTML = `
+        <h1 id="welcomeMessage">Bienvenido, ${user.user_name} ${user.user_last_name}</h1>
+        <a href="signin.html" class="register-link">Registrar usuario</a>
+        <button id="logoutButton" class="logout-button">Cerrar sesión</button>
+    `;
+    document.getElementById("logoutButton").addEventListener("click", logout);
+}
+
+function logout() {
+    token = null;
+    localStorage.removeItem("token");
+    alert('Sesion closed correctly.');
+    window.location.href = "index.html";
+}
+
+//Función para almacenar los datos de los empleados para posteriormente usarlos para el buscador, updates, etc. 
 function loadEmpleados() {
     axios.get(url + "/empleados", headers)
     .then(function(res){
         console.log(res);
-        empleados = res.data.message; // Guarda la lista completa de empleados 
+        empleados = res.data.message; 
     }).catch(function(err){
         console.log(err);
     })
 }
 
+//Función de autocompletado para la barra de búsqueda. 
 function autoComplete() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const autocompleteList = document.getElementById('autocompleteList');
     
-    autocompleteList.innerHTML = ''; // Limpia la lista de autocompletado
+    autocompleteList.innerHTML = ''; 
     
     if (searchTerm.length === 0) {
         return;
@@ -59,12 +99,13 @@ function autoComplete() {
         li.textContent = `${empleado.user_name} ${empleado.user_last_name}`;
         li.addEventListener('click', () => {
             document.getElementById('searchInput').value = li.textContent;
-            autocompleteList.innerHTML = ''; // Limpia la lista de autocompletado
+            autocompleteList.innerHTML = ''; 
         });
         autocompleteList.appendChild(li);
     });
 }
 
+//Función para buscar el empleado al dar click al botón de buscar: 
 function searchEmpleados() {
     const searchTerm = document.getElementById('searchInput').value;
     const empleado = empleados.find(e =>
@@ -78,6 +119,7 @@ function searchEmpleados() {
     }
 }
 
+//Función que despliega los datos del empleado buscado (si es que existe) en un formulario para facilitar acciones de updates y delete. 
 function displayEmpleadoForm(empleado) {
     var container = document.getElementById("empleadoFormContainer");
     container.innerHTML = `
@@ -103,6 +145,7 @@ function displayEmpleadoForm(empleado) {
     `;
 }
 
+//Función para actulizar los datos de un empleado:
 function updateEmpleado() {
     // Obtiene el ID del empleado del input de sólo lectura
     const user_id = document.getElementById("id_empleado").value;
@@ -112,8 +155,6 @@ function updateEmpleado() {
     const user_mail = document.getElementById("userMail").value;
     const user_address = document.getElementById("userAddress").value;
 
-    const token = localStorage.getItem("token");
-
     // Realiza la solicitud PUT al servidor usando axios
     axios.put(`${url}/update`, {
         user_id,
@@ -122,12 +163,7 @@ function updateEmpleado() {
         user_phone,
         user_mail,
         user_address
-    }, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` 
-        }
-    })
+    }, headers)
     .then(function(response) {
         console.log(response.data.message);
         alert(response.data.message);
@@ -135,25 +171,16 @@ function updateEmpleado() {
     })
     .catch(function(error) {
         console.error('Error:', error);
-        alert('Hubo un error al actualizar los datos.');
+        alert('Error updating user data.');
     });
 }
 
 //Función para eliminar el empleado:
 function deleteEmpleado() {
-    // Obtiene el ID del empleado del input de sólo lectura
     const user_id = document.getElementById("id_empleado").value;
 
-    if (!user_id) {
-        alert('ID del empleado es necesario para eliminar.');
-        return;
-    }
-
-    const token = localStorage.getItem("token");
-
-    // Realiza la solicitud DELETE al servidor usando axios
     axios.delete(`${url}/delete`, {
-        data: { user_id }, // Los datos se envían en el cuerpo de la solicitud
+        data: { user_id }, 
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -167,12 +194,4 @@ function deleteEmpleado() {
     .catch(function(error) {
         console.error('Error:', error.message);
     });
-}
-
-function displayWelcomeMessage(user) {
-    var container = document.querySelector(".welcome-container");
-    container.innerHTML = `
-        <h1 id="welcomeMessage">Bienvenido, ${user.user_name} ${user.user_last_name}</h1>
-        <a href="signin.html" class="register-link">Registrar usuario</a>
-    `;
 }

@@ -1,5 +1,6 @@
 window.onload = init; 
 
+//Función inicial que verifica si ya hay un token de una sesión previa: 
 function init() {
     if(!localStorage.getItem("token")){
         document.querySelector('.login-button').addEventListener('click', login);
@@ -8,6 +9,7 @@ function init() {
     }
 }
 
+//Función para hacer la validación del login: 
 function login() {
     var mail = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
@@ -24,7 +26,7 @@ function login() {
             localStorage.setItem("token", res.data.message); 
             window.location.href = "user.html";
         } else {
-            alert("Error al iniciar sesión");
+            alert("Log in failed");
         }
     }).catch(function(err){
         console.log(err);
